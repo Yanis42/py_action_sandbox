@@ -39,7 +39,7 @@ jobs:
         TARGET: ""
         FILE_TYPE: ""
         if: ${{ runner.os == "windows" }}
-          CMD_EXEC: PyInstaller
+          CMD_EXEC: "PyInstaller"
           CMD_EXTRAS: ""
           TARGET: Windows
           FILE_TYPE: "exe"
