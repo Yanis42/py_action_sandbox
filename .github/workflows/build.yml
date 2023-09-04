@@ -34,15 +34,15 @@ jobs:
         BUILD_NAME: PyActionSandbox
         BUILD_ARGS: -F -w --add-data "res;res" src/main.py
         FILENAME: ${{ env.BUILD_NAME }}_${{ env.TARGET }}
+        CMD_EXEC: PyInstaller
         if: ${{ runner.os == "windows" }}
-          CMD_EXEC: "PyInstaller"
           CMD_EXTRAS: ""
-          TARGET: "Windows"
+          TARGET: Windows
           FILE_TYPE: "exe"
         if: ${{ runner.os == "linux" }}
-          CMD_EXEC: "pyinstaller"
+          CMD_EXEC: pyinstaller
           CMD_EXTRAS: "&& cd dist/ && zip -r9 ${{ env.FILENAME }} ${{ env.FILENAME }}"
-          TARGET: "Linux"
+          TARGET: Linux
           FILE_TYPE: "zip"
       - if: ${{ env.CMD_EXEC != "" }}
         run: ${{ env.CMD_EXEC }} ${{ env.BUILD_ARGS }} -n ${{ env.FILENAME }} ${{ env.CMD_EXTRAS }}
