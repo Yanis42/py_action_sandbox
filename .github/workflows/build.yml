@@ -39,20 +39,22 @@ jobs:
         TARGET: ""
         FILE_TYPE: ""
     - if: ${{ runner.os == "windows" }}
+      name: Update Environment Variables (Windows)
       env:
         CMD_EXEC: PyInstaller
         CMD_EXTRAS: ""
         TARGET: Windows
         FILE_TYPE: "exe"
     - if: ${{ runner.os == "linux" }}
+      name: Update Environment Variables (Linux)
       env:
         CMD_EXEC: pyinstaller
         CMD_EXTRAS: "&& cd dist/ && zip -r9 ${{ env.FILENAME }} ${{ env.FILENAME }}"
         TARGET: Linux
         FILE_TYPE: "zip"
-    - name: Build Project for ${{ matrix.os }}
-      if: ${{ env.CMD_EXEC != "" }}
-        run: ${{ env.CMD_EXEC }} ${{ env.BUILD_ARGS }} -n ${{ env.FILENAME }} ${{ env.CMD_EXTRAS }}
+    - if: ${{ env.CMD_EXEC != "" }}
+      name: Build Project for ${{ matrix.os }}
+      run: ${{ env.CMD_EXEC }} ${{ env.BUILD_ARGS }} -n ${{ env.FILENAME }} ${{ env.CMD_EXTRAS }}
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
       with:
