@@ -15,6 +15,14 @@ jobs:
         os:
           - windows-latest
           - ubuntu-latest
+    env:
+      BUILD_NAME: PyActionSandbox
+      BUILD_ARGS: -F -w --add-data "res;res" src/main.py
+      FILENAME: ${{ env.BUILD_NAME }}_${{ env.TARGET }}
+      CMD_EXEC: ""
+      CMD_EXTRAS: ""
+      TARGET: ""
+      FILE_TYPE: ""
     steps:
     - uses: actions/checkout@v3
       with:
@@ -27,36 +35,19 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: Set Environment Variables
-      env:
-        BUILD_NAME: PyActionSandbox
-        BUILD_ARGS: -F -w --add-data "res;res" src/main.py
-        FILENAME: ${{ env.BUILD_NAME }}_${{ env.TARGET }}
-        CMD_EXEC: ""
-        CMD_EXTRAS: ""
-        TARGET: ""
-        FILE_TYPE: ""
-      run: echo "Done!"
-    - if: ${{ runner.os == 'windows' }}
-      name: Update Environment Variables (Windows)
+    - if: ${{ runner.os == 'windows' || runner.os == 'linux' }}
       env:
         CMD_EXEC: PyInstaller
-        CMD_EXTRAS: ""
         TARGET: Windows
         FILE_TYPE: "exe"
-      run: echo "Done!"
-    - if: ${{ runner.os == 'linux' }}
-      name: Update Environment Variables (Linux)
-      env:
-        CMD_EXEC: pyinstaller
-        CMD_EXTRAS: "&& cd dist/ && zip -r9 ${{ env.FILENAME }} ${{ env.FILENAME }}"
-        TARGET: Linux
-        FILE_TYPE: "zip"
-      run: echo "Done!" ${{ env.CMD_EXEC }}
-    - if: ${{ runner.os == 'windows' || runner.os == 'linux' }}
-      name: Build Project for ${{ matrix.os }}
+      if: ${{ runner.os == 'linux' }}
+        env:
+          CMD_EXEC: pyinstaller
+          CMD_EXTRAS: "&& cd dist/ && zip -r9 ${{ env.FILENAME }} ${{ env.FILENAME }}"
+          TARGET: Linux
+          FILE_TYPE: "zip"
+      name: Build Project for ${{ matrix.os }} & Upload Artifact
       run: ${{ env.CMD_EXEC }} ${{ env.BUILD_ARGS }} -n ${{ env.FILENAME }} ${{ env.CMD_EXTRAS }}
-    - name: Upload Artifact
       uses: actions/upload-artifact@v3
       with:
         name: ${{ env.BUILD_NAME }}_${{ env.TARGET }}
