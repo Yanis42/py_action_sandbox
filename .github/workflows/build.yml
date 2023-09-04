@@ -23,7 +23,7 @@ jobs:
             BUILD_NAME: PyActionSandbox_Linux
             BUILD_ARGS: -F -w --add-data "res;res" src/main.py
             CMD_EXEC: pyinstaller
-            CMD_EXTRAS: "&& cd dist/ && zip -r9 ${{ BUILD_NAME }} ${{ BUILD_NAME }}"
+            CMD_EXTRAS: "&& cd dist/ && zip -r9 ${{ matrix.BUILD_NAME }} ${{ matrix.BUILD_NAME }}"
             FILE_TYPE: "zip"
     steps:
     - uses: actions/checkout@v3
