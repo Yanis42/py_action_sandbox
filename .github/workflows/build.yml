@@ -13,7 +13,7 @@ jobs:
     env:
       BUILD_NAME: PyActionSandbox
       BUILD_ARGS: -F -w --add-data "res;res" src/main.py
-      FILENAME: ${{ env.BUILD_NAME }}_${{ env.TARGET }}
+      FILENAME: ${{ BUILD_NAME }}_${{ TARGET }}
     strategy:
       matrix:
         include:
