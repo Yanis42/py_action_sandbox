@@ -17,9 +17,6 @@ jobs:
         os:
           - windows-latest
           - ubuntu-latest
-        build_name: PyActionSandbox
-        build_args: -F -w --add-data "res;res" src/main.py
-
     steps:
     - uses: actions/checkout@v3
       with:
@@ -33,30 +30,25 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Build Project for ${{ matrix.os }}
-      output_name: ${{ matrix.build_name }}_${{ env.TARGET }}
-      - if: ${{ matrix.os == windows-latest }}
-        env:
+      env:
+        BUILD_NAME: PyActionSandbox
+        BUILD_ARGS: -F -w --add-data "res;res" src/main.py
+        FILENAME: ${{ env.BUILD_NAME }}_${{ env.TARGET }}
+        if: ${{ runner.os == "windows" }}
           CMD_EXEC: PyInstaller
           CMD_EXTRAS: ""
           TARGET: Windows
-      - if: ${{ matrix.os == ubuntu-latest }}
-        env:
+          FILE_TYPE: "exe"
+        if: ${{ runner.os == "linux" }}
           CMD_EXEC: pyinstaller
-          CMD_EXTRAS: "&& cd dist/ && zip -r9 ${{ output_name }} ${{ output_name }}"
+          CMD_EXTRAS: "&& cd dist/ && zip -r9 ${{ env.FILENAME }} ${{ env.FILENAME }}"
           TARGET: Linux
+          FILE_TYPE: "zip"
       - if: ${{ env.CMD_EXEC != "" }}
-        run: ${{ env.CMD_EXEC }} ${{ matrix.build_args }} -n ${{ output_name }} ${{ env.CMD_EXTRAS }}
+        run: ${{ env.CMD_EXEC }} ${{ env.BUILD_ARGS }} -n ${{ env.FILENAME }} ${{ env.CMD_EXTRAS }}
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
-      - if: ${{ matrix.os == windows-latest }}
-        env:
-          FILE_TYPE: "exe"
-          TARGET: Windows
-      - if: ${{ matrix.os == ubuntu-latest }}
-        env:
-          FILE_TYPE: "zip"
-          TARGET: Linux
       with:
         - if: ${{ env.FILE_TYPE != "" }}
-          name: ${{ matrix.build_name }}_${{ env.TARGET }}
-          path: ${{ matrix.build_name }}_${{ env.TARGET }}.${{ env.FILE_TYPE }}
+          name: ${{ env.BUILD_NAME }}_${{ env.TARGET }}
+          path: ${{ env.BUILD_NAME }}_${{ env.TARGET }}.${{ env.FILE_TYPE }}
