@@ -34,8 +34,12 @@ jobs:
         BUILD_NAME: PyActionSandbox
         BUILD_ARGS: -F -w --add-data "res;res" src/main.py
         FILENAME: ${{ env.BUILD_NAME }}_${{ env.TARGET }}
-        CMD_EXEC: PyInstaller
+        CMD_EXEC: ""
+        CMD_EXTRAS: ""
+        TARGET: ""
+        FILE_TYPE: ""
         if: ${{ runner.os == "windows" }}
+          CMD_EXEC: PyInstaller
           CMD_EXTRAS: ""
           TARGET: Windows
           FILE_TYPE: "exe"
@@ -44,11 +48,10 @@ jobs:
           CMD_EXTRAS: "&& cd dist/ && zip -r9 ${{ env.FILENAME }} ${{ env.FILENAME }}"
           TARGET: Linux
           FILE_TYPE: "zip"
-      - if: ${{ env.CMD_EXEC != "" }}
+      if: ${{ env.CMD_EXEC != "" }}
         run: ${{ env.CMD_EXEC }} ${{ env.BUILD_ARGS }} -n ${{ env.FILENAME }} ${{ env.CMD_EXTRAS }}
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
       with:
-        - if: ${{ env.FILE_TYPE != "" }}
-          name: ${{ env.BUILD_NAME }}_${{ env.TARGET }}
-          path: ${{ env.BUILD_NAME }}_${{ env.TARGET }}.${{ env.FILE_TYPE }}
+        name: ${{ env.BUILD_NAME }}_${{ env.TARGET }}
+        path: ${{ env.BUILD_NAME }}_${{ env.TARGET }}.${{ env.FILE_TYPE }}
