@@ -55,7 +55,7 @@ jobs:
         TARGET: Linux
         FILE_TYPE: "zip"
       run: echo "Done!"
-    - if: ${{ env.CMD_EXEC != "" }}
+    - if: ${{ env.CMD_EXEC != '' }}
       name: Build Project for ${{ matrix.os }}
       run: ${{ env.CMD_EXEC }} ${{ env.BUILD_ARGS }} -n ${{ env.FILENAME }} ${{ env.CMD_EXTRAS }}
     - name: Upload Artifact
