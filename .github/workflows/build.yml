@@ -39,7 +39,7 @@ jobs:
         TARGET: ""
         FILE_TYPE: ""
       run: echo "Done!"
-    - if: ${{ runner.os == windows }}
+    - if: ${{ runner.os == 'windows' }}
       name: Update Environment Variables (Windows)
       env:
         CMD_EXEC: PyInstaller
@@ -47,7 +47,7 @@ jobs:
         TARGET: Windows
         FILE_TYPE: "exe"
       run: echo "Done!"
-    - if: ${{ runner.os == linux }}
+    - if: ${{ runner.os == 'linux' }}
       name: Update Environment Variables (Linux)
       env:
         CMD_EXEC: pyinstaller
