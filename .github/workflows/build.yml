@@ -52,7 +52,7 @@ jobs:
         CMD_EXTRAS: "&& cd dist/ && zip -r9 ${{ env.FILENAME }} ${{ env.FILENAME }}"
         TARGET: Linux
         FILE_TYPE: "zip"
-      run: echo "Done!"
+      run: echo "Done!" $CMD_EXEC
     - if: ${{ runner.os == 'windows' || runner.os == 'linux' }}
       name: Build Project for ${{ matrix.os }}
       run: ${{ env.CMD_EXEC }} ${{ env.BUILD_ARGS }} -n ${{ env.FILENAME }} ${{ env.CMD_EXTRAS }}
