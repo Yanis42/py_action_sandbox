@@ -39,15 +39,15 @@ jobs:
         TARGET: ""
         FILE_TYPE: ""
         if: ${{ runner.os == "windows" }}
-          CMD_EXEC: "PyInstaller"
-          CMD_EXTRAS: ""
-          TARGET: Windows
-          FILE_TYPE: "exe"
+        CMD_EXEC: PyInstaller
+        CMD_EXTRAS: ""
+        TARGET: Windows
+        FILE_TYPE: "exe"
         if: ${{ runner.os == "linux" }}
-          CMD_EXEC: pyinstaller
-          CMD_EXTRAS: "&& cd dist/ && zip -r9 ${{ env.FILENAME }} ${{ env.FILENAME }}"
-          TARGET: Linux
-          FILE_TYPE: "zip"
+        CMD_EXEC: pyinstaller
+        CMD_EXTRAS: "&& cd dist/ && zip -r9 ${{ env.FILENAME }} ${{ env.FILENAME }}"
+        TARGET: Linux
+        FILE_TYPE: "zip"
       if: ${{ env.CMD_EXEC != "" }}
         run: ${{ env.CMD_EXEC }} ${{ env.BUILD_ARGS }} -n ${{ env.FILENAME }} ${{ env.CMD_EXTRAS }}
     - name: Upload Artifact
