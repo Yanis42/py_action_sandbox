@@ -13,19 +13,20 @@ jobs:
     env:
       BUILD_NAME: PyActionSandbox
       BUILD_ARGS: -F -w --add-data "res;res" src/main.py
-      FILENAME: ${{ BUILD_NAME }}_${{ TARGET }}
     strategy:
       matrix:
         include:
           - os: windows-latest
+            TARGET: Windows
+            FILENAME: ${{ env.BUILD_NAME }}_${{ TARGET }}
             CMD_EXEC: PyInstaller
             CMD_EXTRAS: ""
-            TARGET: Windows
             FILE_TYPE: "exe"
           - os: ubuntu-latest
+            TARGET: Linux
+            FILENAME: ${{ env.BUILD_NAME }}_${{ TARGET }}
             CMD_EXEC: pyinstaller
             CMD_EXTRAS: "&& cd dist/ && zip -r9 ${{ env.FILENAME }} ${{ env.FILENAME }}"
-            TARGET: Linux
             FILE_TYPE: "zip"
     steps:
     - uses: actions/checkout@v3
