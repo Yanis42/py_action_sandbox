@@ -43,4 +43,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: ${{ matrix.BUILD_NAME }}
-        path: ${{ matrix.BUILD_NAME }}.${{ matrix.FILE_TYPE }}
+        path: dist/${{ matrix.BUILD_NAME }}.${{ matrix.FILE_TYPE }}
