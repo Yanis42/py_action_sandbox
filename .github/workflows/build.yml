@@ -17,14 +17,12 @@ jobs:
             BUILD_NAME: PyActionSandbox_Windows
             BUILD_ARGS: -F -w --add-data "res;res" src/main.py
             CMD_EXEC: PyInstaller
-            CMD_EXTRAS: ""
-            FILE_TYPE: "exe"
+            FILE_TYPE: ".exe"
           - os: ubuntu-latest
             BUILD_NAME: PyActionSandbox_Linux
             BUILD_ARGS: -F -w --add-data "res:res" src/main.py
             CMD_EXEC: pyinstaller
-            CMD_EXTRAS: "&& cd dist/ && zip -r9 PyActionSandbox_Linux PyActionSandbox_Linux"
-            FILE_TYPE: "zip"
+            FILE_TYPE: ""
     steps:
     - uses: actions/checkout@v3
       with:
@@ -43,4 +41,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: ${{ matrix.BUILD_NAME }}
-        path: dist/${{ matrix.BUILD_NAME }}.${{ matrix.FILE_TYPE }}
+        path: dist/${{ matrix.BUILD_NAME }}${{ matrix.FILE_TYPE }}
