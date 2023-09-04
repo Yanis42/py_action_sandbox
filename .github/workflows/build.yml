@@ -21,7 +21,7 @@ jobs:
             FILE_TYPE: "exe"
           - os: ubuntu-latest
             BUILD_NAME: PyActionSandbox_Linux
-            BUILD_ARGS: -F -w --add-data "res;res" src/main.py
+            BUILD_ARGS: -F -w --add-data "res:res" src/main.py
             CMD_EXEC: pyinstaller
             CMD_EXTRAS: "&& cd dist/ && zip -r9 PyActionSandbox_Linux PyActionSandbox_Linux"
             FILE_TYPE: "zip"
