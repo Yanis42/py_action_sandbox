@@ -29,6 +29,7 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
+      - name: Echo
         run: echo "saucisse:" ${{ github.ref }}
 
       # - name: Upload Assets (Windows)
