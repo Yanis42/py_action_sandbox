@@ -17,15 +17,18 @@ jobs:
         run: echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
 
       - name: Download the artifact
-        uses: actions/download-artifact@v3
+        uses: dawidd6/action-download-artifact@v2
         with:
-          name: PyActionSandbox_Linux
-          path: .
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: build.yml
+          workflow_conclusion: success
+          skip_unpack: true
+          if_no_artifact_found: fail
 
-      - name: Create the release
-        run: |
-          gh release create ${{ steps.get-the-latest-tag.outputs.tag }}
-          gh release upload --name PyActionSandbox_Linux --file dist/PyActionSandbox_Linux
+      # - name: Create the release
+      #   run: |
+      #     gh release create ${{ steps.get-the-latest-tag.outputs.tag }}
+      #     gh release upload --name PyActionSandbox_Linux --file dist/PyActionSandbox_Linux
 
       # - name: Call Other Workflow
       #   uses: yanis42/py_action_sandbox@v1
