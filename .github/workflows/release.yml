@@ -11,6 +11,16 @@ jobs:
     name: "Publish Release"
     runs-on: [ ubuntu-latest ]
     steps:
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
       - name: Download the artifact
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -19,16 +29,6 @@ jobs:
           workflow_conclusion: success
           skip_unpack: true
           if_no_artifact_found: fail
-
-      - name: Create Release
-        uses: actions/create-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
 
       - name: Upload Assets (Windows)
         uses: actions/upload-release-asset@v1
