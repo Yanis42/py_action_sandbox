@@ -7,50 +7,46 @@ on:
       - 'v*'
 
 jobs:
-  createrelease:
-    name: Create Release
-    runs-on: [ubuntu-latest]
-    steps:
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
-
   publish_release:
     name: "Publish Release"
     runs-on: [ ubuntu-latest ]
     steps:
-      - name: Download the artifact
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: build.yml
-          workflow_conclusion: success
-          skip_unpack: true
-          if_no_artifact_found: fail
+      # - name: Download the artifact
+      #   uses: dawidd6/action-download-artifact@v2
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     workflow: build.yml
+      #     workflow_conclusion: success
+      #     skip_unpack: true
+      #     if_no_artifact_found: fail
 
-      - name: Upload Assets (Windows)
-        uses: actions/upload-release-asset@v1
+      - name: Create Release
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./PyActionSandbox_Windows.zip
-          asset_name: PyActionSandbox_Windows.zip
-          asset_content_type: application/zip
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+        run: echo "saucisse:" ${{ github.ref }}
 
-      - name: Upload Assets (Linux)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./PyActionSandbox_Linux.zip
-          asset_name: PyActionSandbox_Linux.zip
-          asset_content_type: application/zip
+      # - name: Upload Assets (Windows)
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: ./PyActionSandbox_Windows.zip
+      #     asset_name: PyActionSandbox_Windows.zip
+      #     asset_content_type: application/zip
+
+      # - name: Upload Assets (Linux)
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: ./PyActionSandbox_Linux.zip
+      #     asset_name: PyActionSandbox_Linux.zip
+      #     asset_content_type: application/zip
