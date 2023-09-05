@@ -19,7 +19,8 @@ jobs:
       #     workflow_conclusion: success
       #     skip_unpack: true
       #     if_no_artifact_found: fail
-
+      - name: Echo
+        run: echo "saucisse:" ${{ github.ref }}
       - name: Create Release
         uses: actions/create-release@v1
         env:
@@ -29,9 +30,6 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-      - name: Echo
-        run: echo "saucisse:" ${{ github.ref }}
-
       # - name: Upload Assets (Windows)
       #   uses: actions/upload-release-asset@v1
       #   env:
@@ -41,7 +39,6 @@ jobs:
       #     asset_path: ./PyActionSandbox_Windows.zip
       #     asset_name: PyActionSandbox_Windows.zip
       #     asset_content_type: application/zip
-
       # - name: Upload Assets (Linux)
       #   uses: actions/upload-release-asset@v1
       #   env:
