@@ -11,7 +11,7 @@ jobs:
     runs-on: [ ubuntu-latest ]
     steps:
       - name: Call Other Workflow
-        uses: yanis42/build@v1
+        uses: yanis42/py_action_sandbox@v1
       - name: Get Artifacts
         uses: actions/download-artifact@v3
         with:
